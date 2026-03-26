@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace EMI.Domain.Entities
 {
     public class Email : BaseEntity
-    {
+    {   
+        //Inherited the BaseEntity class
         //Starting point
     }
 }
