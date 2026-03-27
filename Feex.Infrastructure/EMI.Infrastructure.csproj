@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Feex.Application\EMI.Application.csproj" />
     <ProjectReference Include="..\Feex.Core\EMI.Domain.csproj" />
   </ItemGroup>
 

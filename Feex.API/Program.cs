@@ -1,7 +1,13 @@
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using EMI.AInfrastructure.Services;
+using EMI.Application.Interface;
+//using EMI.Application.Services;
+using EMI.Domain.Interfaces;
+using EMI.Infrastructure.Repository;
 using Feex.API;
 using Feex.API.Middlewares;
 using Feex.Application;
-using Feex.Application.Services;
+//using Feex.Application.Services;
 using Feex.Infrastructure;
 using Feex.Infrastructure.DbContexts;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +25,14 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Add services to the container.
+builder.Services.AddDbContext<EMIContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IEmailRepository, EmailRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
+
+
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -40,7 +54,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     };
 });
 
-builder.RegisterCustomServices(configuration);
+//builder.RegisterCustomServices(configuration);
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
     {

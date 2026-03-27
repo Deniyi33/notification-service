@@ -10,6 +10,23 @@ namespace Feex.Core.Enums
     /// STRICTLY, ALL ENUMS SHOULD FOLLOW SEQUENTIAL NUMBERING
     /// </summary>
 
+
+    //EmailType ENUM
+    public enum EmailType
+    {   
+        LoanAccountCreated = 1,
+        DisbursementPaid = 2,
+        RepaymentReminder = 3,
+        LoanPaidOff = 4,
+    }
+    //EmailStatus ENUM
+    public enum EmailStatus
+    {
+        Pending = 1,
+        Sent = 2,
+        Failed = 3
+    }
+
     public static class EnumHelper
     {
         public static (bool isValid, TEnum enumValue) IsStringAnEnum<TEnum>(string enumString) where TEnum : struct

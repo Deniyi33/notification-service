@@ -1,8 +1,8 @@
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Feex.Application;
-using Feex.Application.Services;
-using Feex.Hangfire;
+//using Feex.Application.Services;
+//using Feex.Hangfire;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
@@ -26,17 +26,17 @@ builder.Services.AddHangfire(config =>
 {
     config.UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireContext"));
 });
-builder.Services.AddHangfireServer();
-builder.RegisterCustomServices(builder.Configuration);
-builder.Services.AddScoped<JobService>();
+//builder.Services.AddHangfireServer();
+//builder.RegisterCustomServices(builder.Configuration);
+//builder.Services.AddScoped<JobService>();
 //builder.Services.AddScoped<PaystackProcessorService>();
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var hangfireJobService = services.GetRequiredService<JobService>();
-    hangfireJobService.ScheduleRecurringJobs();
+    //var hangfireJobService = services.GetRequiredService<JobService>();
+    //hangfireJobService.ScheduleRecurringJobs();
 }
 
 // Configure the HTTP request pipeline.

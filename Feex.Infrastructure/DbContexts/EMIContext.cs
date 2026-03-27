@@ -1,4 +1,5 @@
-﻿using Feex.Core.Entities;
+﻿using EMI.Domain.Entities;
+using Feex.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Feex.Infrastructure.DbContexts
@@ -43,6 +44,7 @@ namespace Feex.Infrastructure.DbContexts
 
         #region DB Sets
         public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<Email> Emails{ get; set; }
 
 
 

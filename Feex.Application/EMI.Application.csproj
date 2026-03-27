@@ -18,11 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Feex.Core\EMI.Domain.csproj" />
-    <ProjectReference Include="..\Feex.Infrastructure\EMI.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DTO\ResponseDTO\" />
   </ItemGroup>
 
 </Project>
