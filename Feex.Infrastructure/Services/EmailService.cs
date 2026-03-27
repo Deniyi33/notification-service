@@ -28,16 +28,19 @@ namespace EMI.AInfrastructure.Services
                 Subject = request.Subject,
                 Body = request.Body,
                 EmailType = request.EmailType,
-                Status = EmailStatus.Pending
+                Status = EmailStatus.Pending,
+                
             };
 
-            await _emailRepository.AddAsync(email);
+            
 
             try
             {
+                await _emailRepository.AddAsync(email);
                 //Email provider logic to send Email
 
                 email.Status = EmailStatus.Sent;
+                email.ModifiedBy = "System";
                 await _emailRepository.UpdateAsync(email);
 
                 return new SendEmailResponseDto
@@ -47,14 +50,20 @@ namespace EMI.AInfrastructure.Services
                 };
             }
             catch (Exception ex)
-            {
-                email.Status = EmailStatus.Failed;
-                await _emailRepository.UpdateAsync(email);
+            {  
+                if(email.Id > 0)
+                {
+                    email.Status = EmailStatus.Failed;
+                    email.ModifiedBy = "System";
+                    email.FailureReason = ex.Message;
+                    await _emailRepository.UpdateAsync(email);
+
+                }
 
                 return new SendEmailResponseDto
                 {
                     Success = false,
-                    Message = "Failed to send email."
+                    Message = $"Failed to send email. {ex.Message}"
                 };
             }
         }

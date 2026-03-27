@@ -9,7 +9,7 @@ namespace Feex.Core.Entities
     public class BaseEntity
     {
         public virtual long Id { get; set; }
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = "System";
         public string? ModifiedBy { get; set; }
         public virtual DateTime CreationDate { get; set; } = DateTime.Now;
         public DateTime? LastModifiedDate { get; set; }

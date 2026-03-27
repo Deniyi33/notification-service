@@ -16,5 +16,6 @@ namespace EMI.Domain.Entities
         public string Body { get; set; }
         public EmailType EmailType { get; set; }
         public EmailStatus Status { get; set; }
+        public string? FailureReason { get; set; }
     }
 }
