@@ -4,12 +4,14 @@ using EMI.Application.Interface;
 //using EMI.Application.Services;
 using EMI.Domain.Interfaces;
 using EMI.Infrastructure.Repository;
+using EMI.Infrastructure.Services;
 using Feex.API;
 using Feex.API.Middlewares;
 using Feex.Application;
 //using Feex.Application.Services;
 using Feex.Infrastructure;
 using Feex.Infrastructure.DbContexts;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -29,8 +31,8 @@ builder.Services.AddDbContext<EMIContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-
-
+//builder.Services.AddScoped<IEmailSenderService, ZohoEmailSender>();
+builder.Services.AddHttpClient<IEmailSenderService, ZohoEmailSender>();
 
 
 

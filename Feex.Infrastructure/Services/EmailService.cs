@@ -15,10 +15,12 @@ namespace EMI.AInfrastructure.Services
     public class EmailService : IEmailService
     {
         private readonly IEmailRepository _emailRepository;
+        private readonly IEmailSenderService _emailSenderService;
 
-        public EmailService(IEmailRepository emailRepository)
+        public EmailService(IEmailRepository emailRepository, IEmailSenderService emailSenderService)
         {
             _emailRepository = emailRepository;
+            _emailSenderService = emailSenderService;
         }
         public async Task<SendEmailResponseDto> SendEmailAsync(SendEmailRequestDto request)
         {
@@ -32,21 +34,31 @@ namespace EMI.AInfrastructure.Services
                 
             };
 
-            
+
 
             try
             {
                 await _emailRepository.AddAsync(email);
-                //Email provider logic to send Email
 
-                email.Status = EmailStatus.Sent;
+                var sent = await _emailSenderService.SendEmailAsync(email.To, email.Subject, email.Body);
+
+                if (sent)
+                {
+                    email.Status = EmailStatus.Sent;
+                }
+                else
+                {
+                    email.Status = EmailStatus.Failed;
+                    email.FailureReason = "Zoho failed to send email";
+                }
+
                 email.ModifiedBy = "System";
                 await _emailRepository.UpdateAsync(email);
 
                 return new SendEmailResponseDto
                 {
-                    Success = true,
-                    Message = "Email sent successfully."
+                    Success = sent,
+                    Message = sent ? "Email sent successfully." : "Failed to send email."
                 };
             }
             catch (Exception ex)
