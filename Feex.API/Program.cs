@@ -32,7 +32,9 @@ builder.Services.AddDbContext<EMIContext>(options =>
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 //builder.Services.AddScoped<IEmailSenderService, ZohoEmailSender>();
+builder.Services.AddHttpClient<ZohoTokenService>();
 builder.Services.AddHttpClient<IEmailSenderService, ZohoEmailSender>();
+builder.Services.AddSingleton<ZohoTokenService>();
 
 
 

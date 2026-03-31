@@ -14,9 +14,12 @@ namespace EMI.Infrastructure.Services
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
 
-        public ZohoEmailSender(HttpClient httpClient, IConfiguration config)
+        private readonly ZohoTokenService _tokenService;
+
+        public ZohoEmailSender(HttpClient httpClient, ZohoTokenService tokenService, IConfiguration config)
         {
             _httpClient = httpClient;
+            _tokenService = tokenService;
             _config = config;
         }
 
@@ -24,34 +27,31 @@ namespace EMI.Infrastructure.Services
         {
             try
             {
-                // Prepare the payload
+                // Get a fresh access token automatically
+                var accessToken = await _tokenService.GetAccessTokenAsync();
+
                 var payload = new
                 {
                     fromAddress = _config["ZohoEmail:FromAddress"],
                     toAddress = to,
-                    subject = subject,        // must be lowercase
+                    subject = subject,
                     content = body,
-                    mailFormat = "html"       // Zoho supports "html" or "text"
+                    mailFormat = "html"
                 };
 
                 var json = JsonSerializer.Serialize(payload);
                 var contentData = new StringContent(json, Encoding.UTF8, "application/json");
 
-                // Set Authorization header
                 _httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Zoho-oauthtoken", _config["ZohoEmail:ApiToken"]);
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Zoho-oauthtoken", accessToken);
 
-                // Build the full API URL
                 var url = $"{_config["ZohoEmail:ApiDomain"]}/api/accounts/{_config["ZohoEmail:AccountId"]}/messages";
 
-                // Send the POST request
                 var response = await _httpClient.PostAsync(url, contentData);
 
-                // Log full response for debugging
                 var responseContent = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("Zoho Response: " + responseContent);
 
-                // Return true only if Zoho responds with success
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
