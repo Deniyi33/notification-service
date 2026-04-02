@@ -22,7 +22,7 @@ namespace EMI.Infrastructure.Services
             _tokenService = tokenService;
             _config = config;
         }
-
+        //Rename Branch
         public async Task<bool> SendEmailAsync(string to, string subject, string body)
         {
             try
