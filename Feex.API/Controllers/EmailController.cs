@@ -3,6 +3,8 @@ using EMI.Application.Interface;
 using Feex.API.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Hangfire;
+using EMI.AInfrastructure.Services;
 
 namespace EMI.API.Controllers
 {
@@ -20,8 +22,11 @@ namespace EMI.API.Controllers
         [HttpPost("send")]
         public async Task<IActionResult> SendEmail([FromBody] SendEmailRequestDto request)
         {
-            var response = await _emailService.SendEmailAsync(request);
-            return Ok(response);
+            BackgroundJob.Enqueue<IEmailService>(x =>
+                x.SendEmailAsync(request)
+            );
+        
+            return Ok("Response");
         }
 
     }
