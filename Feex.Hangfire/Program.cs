@@ -7,6 +7,7 @@ using Feex.Application;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using EMI.Application.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,4 +29,21 @@ var app = builder.Build();
 app.UseHangfireDashboard();
 
 app.MapControllers();
+
+
+using (var scope = app.Services.CreateScope() )
+{
+    var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+    RecurringJob.AddOrUpdate<IEmailService>(
+    "send-recurring-email",
+    x => x.SendEmailAsync(new EMI.Application.DTO.RequestDTO.SendEmailRequestDto
+    {
+        To = "mail@gmail.com",
+        Subject = "scheduled email",
+        Body = "it is sent every minute"
+    }),
+    "******" // every minute
+   );
+}
+
 app.Run();
