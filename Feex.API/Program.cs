@@ -1,6 +1,8 @@
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using EMI.AInfrastructure.Services;
 using EMI.Application.Interface;
+using EMI.Application.Services;
+
 //using EMI.Application.Services;
 using EMI.Domain.Interfaces;
 using EMI.Infrastructure.Repository;
@@ -31,10 +33,10 @@ builder.Services.AddDbContext<EMIContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IEmailRepository, EmailRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-//builder.Services.AddScoped<IEmailSenderService, ZohoEmailSender>();
+builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+builder.Services.AddScoped<ITemplateRendererService, TemplateRendererService>();
+builder.Services.AddScoped<IEmailSenderService, ZohoEmailSender>();
 builder.Services.AddHttpClient<ZohoTokenService>();
-builder.Services.AddHttpClient<IEmailSenderService, ZohoEmailSender>();
-builder.Services.AddSingleton<ZohoTokenService>();
 
 
 

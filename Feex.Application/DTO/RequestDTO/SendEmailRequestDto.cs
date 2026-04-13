@@ -1,17 +1,21 @@
-﻿using Feex.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using Feex.Core.Enums;
 
 namespace EMI.Application.DTO.RequestDTO
 {
     public class SendEmailRequestDto
     {
+        [Required]
+        [EmailAddress]
         public string To { get; set; }
+
+        [Required]
         public string Subject { get; set; }
-        public string Body { get; set; }
+
+        [Required]
         public EmailType EmailType { get; set; }
+
+        [Required]
+        public Dictionary<string, string> TemplateData { get; set; }
     }
 }

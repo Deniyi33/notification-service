@@ -1,14 +1,11 @@
-﻿using EMI.Application.DTO.RequestDTO;
-using EMI.Application.DTO.ResponseDTO;
+﻿using EMI.Application.DTO.ResponseDTO;
+using EMI.Application.DTO.RequestDTO;
+
 using EMI.Application.Interface;
 using EMI.Domain.Entities;
 using EMI.Domain.Interfaces;
 using Feex.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace EMI.AInfrastructure.Services
 {
@@ -16,32 +13,51 @@ namespace EMI.AInfrastructure.Services
     {
         private readonly IEmailRepository _emailRepository;
         private readonly IEmailSenderService _emailSenderService;
+        private readonly IEmailTemplateService _templateService;
+        private readonly ITemplateRendererService _templateRendererService;
 
-        public EmailService(IEmailRepository emailRepository, IEmailSenderService emailSenderService)
+        public EmailService(
+            IEmailRepository emailRepository,
+            IEmailSenderService emailSenderService,
+            IEmailTemplateService templateService,
+            ITemplateRendererService templateRendererService)
         {
             _emailRepository = emailRepository;
             _emailSenderService = emailSenderService;
+            _templateService = templateService;
+            _templateRendererService = templateRendererService;
         }
+
         public async Task<SendEmailResponseDto> SendEmailAsync(SendEmailRequestDto request)
         {
             var email = new Email
             {
                 To = request.To,
                 Subject = request.Subject,
-                Body = request.Body,
                 EmailType = request.EmailType,
-                Status = EmailStatus.Pending,
-                
+                TemplateData = JsonConvert.SerializeObject(request.TemplateData),
+                Status = EmailStatus.Pending
             };
-
-
 
             try
             {
+                // 1. Save email first
                 await _emailRepository.AddAsync(email);
 
-                var sent = await _emailSenderService.SendEmailAsync(email.To, email.Subject, email.Body);
+                // 2. Load template
+                var template = await _templateService.GetTemplateAsync(email.EmailType);
 
+                // 3. Render template with data
+                var body = _templateRendererService.Render(template, request.TemplateData);
+
+                // 4. Send email
+                var sent = await _emailSenderService.SendEmailAsync(
+                    email.To,
+                    email.Subject,
+                    body
+                );
+
+                // 5. Update status
                 if (sent)
                 {
                     email.Status = EmailStatus.Sent;
@@ -49,7 +65,7 @@ namespace EMI.AInfrastructure.Services
                 else
                 {
                     email.Status = EmailStatus.Failed;
-                    email.FailureReason = "Zoho failed to send email";
+                    email.FailureReason = "Email provider failed to send email";
                 }
 
                 email.ModifiedBy = "System";
@@ -62,14 +78,14 @@ namespace EMI.AInfrastructure.Services
                 };
             }
             catch (Exception ex)
-            {  
-                if(email.Id > 0)
+            {
+                if (email.Id > 0)
                 {
                     email.Status = EmailStatus.Failed;
                     email.ModifiedBy = "System";
                     email.FailureReason = ex.Message;
-                    await _emailRepository.UpdateAsync(email);
 
+                    await _emailRepository.UpdateAsync(email);
                 }
 
                 return new SendEmailResponseDto
