@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "5nQ5SPQB+zg=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\user\\source\\repos\\notification-service\\EMI.Domain\\EMI.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.6\\microsoft.entityframeworkcore.abstractions.8.0.6.nupkg.sha512"
+  ],
+  "logs": []
+}
