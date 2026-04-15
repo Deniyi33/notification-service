@@ -48,3 +48,4 @@
 # PROTECT SECRETS
 appsettings.json
 appsettings.Development.json
+/.vs
