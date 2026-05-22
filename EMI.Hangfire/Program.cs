@@ -31,7 +31,7 @@ app.UseHangfireDashboard();
 RecurringJob.AddOrUpdate<IEmailService>(
   "loan-reminder",
   x => x.SendLoanReminder("mail@gmail.com"),
-  Cron.Monthly // every minute
+  Cron.Minutely // every minute
  );
 
 Console.WriteLine("Recurring job registered");

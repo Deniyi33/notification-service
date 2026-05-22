@@ -1,0 +1,13 @@
+C:\Users\user\source\repos\notification-service\EMI.Domain\bin\Debug\net8.0\EMI.Domain.deps.json
+C:\Users\user\source\repos\notification-service\EMI.Domain\bin\Debug\net8.0\EMI.Domain.dll
+C:\Users\user\source\repos\notification-service\EMI.Domain\bin\Debug\net8.0\EMI.Domain.pdb
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.AssemblyInfo.cs
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.sourcelink.json
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.dll
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\refint\EMI.Domain.dll
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\EMI.Domain.pdb
+C:\Users\user\source\repos\notification-service\EMI.Domain\obj\Debug\net8.0\ref\EMI.Domain.dll

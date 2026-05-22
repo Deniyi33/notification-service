@@ -1,0 +1,116 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Auth Service",
+    "description": "Auth Service API (Supports JWT + API Key)",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Email/send": {
+      "post": {
+        "tags": [
+          "Email"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmailRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmailRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmailRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Test": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EmailType": {
+        "enum": [
+          "LoanAccountCreated",
+          "DisbursementPaid",
+          "RepaymentReminder",
+          "LoanPaidOff"
+        ],
+        "type": "string"
+      },
+      "SendEmailRequestDto": {
+        "required": [
+          "body",
+          "subject",
+          "to"
+        ],
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "emailType": {
+            "$ref": "#/components/schemas/EmailType"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "JWT Authorization header using Bearer scheme.\n\nExample: `Bearer {token}`",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      },
+      "ApiKey": {
+        "type": "apiKey",
+        "description": "API Key Authorization.\n\nExample: `ApiKey {secret}`",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ],
+      "ApiKey": [ ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+C:\Users\user\source\repos\notification-service\Feex.Application\bin\Debug\net8.0\EMI.Application.deps.json
+C:\Users\user\source\repos\notification-service\Feex.Application\bin\Debug\net8.0\EMI.Application.dll
+C:\Users\user\source\repos\notification-service\Feex.Application\bin\Debug\net8.0\EMI.Application.pdb
+C:\Users\user\source\repos\notification-service\Feex.Application\bin\Debug\net8.0\EMI.Domain.dll
+C:\Users\user\source\repos\notification-service\Feex.Application\bin\Debug\net8.0\EMI.Domain.pdb
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.AssemblyInfo.cs
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.sourcelink.json
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Appl.77E2486F.Up2Date
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.dll
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\refint\EMI.Application.dll
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\EMI.Application.pdb
+C:\Users\user\source\repos\notification-service\Feex.Application\obj\Debug\net8.0\ref\EMI.Application.dll
