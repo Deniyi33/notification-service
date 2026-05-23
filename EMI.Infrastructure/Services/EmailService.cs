@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using EMI.Infrastructure.DbContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMI.AInfrastructure.Services
 {
@@ -18,13 +20,15 @@ namespace EMI.AInfrastructure.Services
     {
         private readonly IEmailRepository _emailRepository;
         private readonly IEmailSenderService _emailSenderService;
+        private readonly AppDbContext _context;
 
         private readonly ZohoEmailSender _zohoEmailSender;
 
-        public EmailService(IEmailRepository emailRepository, IEmailSenderService emailSenderService)
+        public EmailService(IEmailRepository emailRepository, IEmailSenderService emailSenderService, AppDbContext context)
         {
             _emailRepository = emailRepository;
             _emailSenderService = emailSenderService;
+            _context = context;
         }
         public async Task<SendEmailResponseDto> SendEmailAsync(SendEmailRequestDto request)
         {
@@ -36,75 +40,106 @@ namespace EMI.AInfrastructure.Services
                 CustomerId = request.CustomerId,
                 EmailType = request.EmailType,
                 Status = EmailStatus.Pending,
+                IsSent = false
                 
             };
 
+            await _emailRepository.AddAsync(email);
 
+            bool sent = false;
 
             try
             {
-                await _emailRepository.AddAsync(email);
-
-                var sent = await _emailSenderService.SendEmailAsync(email.To, email.Subject, email.Body);
-
-            
-               
+                sent = await _emailSenderService.SendEmailAsync(
+                    email.To, 
+                    email.Subject, 
+                    email.Body
+                );
 
                 if (sent)
                 {
-                    email.Status = EmailStatus.Sent;
+                    email.Status = sent ? EmailStatus.Sent : EmailStatus.Failed;
                     email.IsSent = true;
                 }
                 else
                 {
-                    email.Status = EmailStatus.Failed;
-                    email.FailureReason = "Zoho rejected the request";
+                    email.FailureReason = sent ? null : "Zoho rejected the request";
                 }
 
                 email.ModifiedBy = "System";
                 await _emailRepository.UpdateAsync(email);
 
-                return new SendEmailResponseDto
-                {
-                    Success = sent,
-                    Message = sent ? "Email sent successfully." : "Failed to send email."
-                };
+               
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"DATABASE ERROR: {ex.Message}");
-                if (ex.InnerException != null)
-                    Console.WriteLine($"INNER ERROR: {ex.InnerException.Message}");
+                email.Status = EmailStatus.Failed;
+                email.FailureReason = ex.Message;
+
+                await _emailRepository.UpdateAsync(email);
 
                 throw;
             }
+
+            return new SendEmailResponseDto
+            {
+                Success = sent,
+                Message = sent ? "Email sent successfully." : "Failed to send email."
+            };
         }
 
-        public async Task SendLoanReminder(string to)
+        public async Task SendLoanReminder()
         {
             Console.WriteLine("Job started");
 
-            var request = new SendEmailRequestDto
-            {
-             To = to,
-             Subject = "Loan Repayment Reminder",
-             Body = "Dear Customer, your loan repayment is due.",
-            };
-            await SendEmailAsync(request);
+            var customers = await _context.Loans
+                .Where(x => x.DueDate.Date == DateTime.UtcNow.Date)
+                .Select(x => new
+                {
+                    x.CustomerId,
+                    x.Customer.Email
+                })
+                .ToListAsync();
 
+            foreach (var customer in customers)
+            {
+                var email = new Email
+                {
+                    To = customer.Email,
+                    Subject = "Loan Repayment Reminder",
+                    Body = "Dear Customer, your loan repayment is due.",
+                    Status = EmailStatus.Pending,
+                    CustomerId = customer.CustomerId,
+                    IsSent = false
+                };
+
+                await _emailRepository.AddAsync(email);
+
+                try
+                {
+
+                    var sent = await _emailSenderService.SendEmailAsync(
+                        email.To,
+                        email.Subject,
+                        email.Body
+                        );
+
+                    email.Status = sent ? EmailStatus.Sent : EmailStatus.Failed;
+                    email.IsSent = sent;
+                    email.ModifiedBy = "System";
+
+                    await _emailRepository.UpdateAsync(email);
+
+                }
+                catch (Exception ex)
+                {
+                    email.Status = EmailStatus.Failed;
+                    email.FailureReason = ex.Message;
+
+                    await _emailRepository.UpdateAsync(email);
+                }
+            }
             Console.WriteLine("Job finished");
-
-            //Save to Database
-            var email = new Email
-            {
-                To = to,
-                Subject = "" ,
-                Body = "",
-                Status = EmailStatus.Sent,
-                CustomerId = 1 // change if needed
-            };
-
-
         }
     }
 }

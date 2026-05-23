@@ -51,6 +51,8 @@ namespace EMI.Infrastructure.Services
 
                 var response = await _httpClient.PostAsync(url, contentData);
 
+                Console.WriteLine("Status Code: " + response.StatusCode);
+
                 var responseContent = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("Zoho Response: " + responseContent);
 
@@ -59,7 +61,12 @@ namespace EMI.Infrastructure.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"Error sending Zoho email: {ex.Message}");
-                return false;
+
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Error: {ex.InnerException.Message}");
+                }
+                throw;
             }
         }
         

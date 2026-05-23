@@ -26,7 +26,11 @@ namespace EMI.API.Controllers
                 x.SendEmailAsync(request)
             );
         
-            return Ok("Response");
+            return Ok(new
+            {
+                status = true,
+                message = "Email sent successfully"
+            });
         }
 
     }

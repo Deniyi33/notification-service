@@ -11,9 +11,9 @@ namespace EMI.Infrastructure.Repository
 {
     public class EmailRepository : IEmailRepository
     {
-        private readonly EMIContext _context;
+        private readonly AppDbContext _context;
 
-        public EmailRepository(EMIContext context)
+        public EmailRepository(AppDbContext context)
         {
             _context = context;
         }

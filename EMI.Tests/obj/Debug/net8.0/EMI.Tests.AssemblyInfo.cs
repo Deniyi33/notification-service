@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EMI.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07f583f48acbb59d09a4edbae85034140b7387fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ce9084cdf4ea745f168a00988e42c4376a1b319")]
 [assembly: System.Reflection.AssemblyProductAttribute("EMI.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EMI.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -11,6 +11,6 @@ namespace EMI.Application.Interface
     public interface IEmailService
     {
         Task<SendEmailResponseDto> SendEmailAsync(SendEmailRequestDto request);
-        Task SendLoanReminder(string to);
+        Task SendLoanReminder();
     }
 }
